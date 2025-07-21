@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ping Flask Server</title>
+</head>
+<body>
+  <h1 id="status">Cek koneksi...</h1>
+  <script>
+    fetch("https://your-railway-app.up.railway.app/ping")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("status").innerText = "✅ " + data.status;
+      })
+      .catch(() => {
+        document.getElementById("status").innerText = "❌ Tidak terhubung";
+      });
+  </script>
+</body>
+</html>
