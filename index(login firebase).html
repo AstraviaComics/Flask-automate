@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login App</title>
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyBH409ZUB-eJFJ_gnvbd76hkwTAW5-YbrI",
+  authDomain: "myhybridapp-938d9.firebaseapp.com",
+  projectId: "myhybridapp-938d9",
+  storageBucket: "myhybridapp-938d9.appspot.com",
+  messagingSenderId: "677092135981",
+  appId: "1:677092135981:web:92ad3f2ba10bd8300cd4a4",
+  measurementId: "G-QFGLB36F4F"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// Check redirect result
+getRedirectResult(auth)
+  .then((result) => {
+    if (result && result.user) {
+      const user = result.user;
+      document.getElementById("status").textContent = `Welcome, ${user.displayName}!`;
+      document.getElementById("loginBtn").style.display = "none";
+      document.getElementById("logoutBtn").style.display = "block";
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+    alert("Login failed: " + error.message);
+  });
+
+// Login
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("loginBtn").addEventListener("click", () => {
+    signInWithRedirect(auth, provider);
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    signOut(auth).then(() => {
+      document.getElementById("status").textContent = "Logged out.";
+      document.getElementById("loginBtn").style.display = "block";
+      document.getElementById("logoutBtn").style.display = "none";
+    });
+  });
+});
+
+  </script>
+</head>
+<body style="font-family: sans-serif; text-align: center; margin-top: 100px;">
+  <h1 id="status">Please login with Google</h1>
+  <button id="loginBtn" style="padding: 10px 20px; font-size: 16px;">Login with Google</button>
+  <button id="logoutBtn" style="padding: 10px 20px; font-size: 16px; display: none;">Logout</button>
+</body>
+</html>
